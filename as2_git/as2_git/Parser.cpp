@@ -27,6 +27,7 @@ void Parser::readFile(string a_filename)
 		splitString(line, coordinates);
 	}
 	createPoints(coordinates);
+	input.close();
 }
 
 void Parser::splitString(string line, vector<float>& a_coordinates)
