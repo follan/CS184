@@ -38,7 +38,7 @@ void reshapeScene(int widht, int height)
 }
 
 
-
+/*
 int main(int argc ,char* argv[])
 {
 	glutInit(&argc, argv);
@@ -51,3 +51,4 @@ int main(int argc ,char* argv[])
 	glutReshapeFunc(reshapeScene);
 	glutMainLoop();
 }
+*/

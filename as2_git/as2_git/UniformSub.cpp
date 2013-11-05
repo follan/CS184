@@ -87,7 +87,7 @@ void UniformSub::bezCurveInterp(const vector<Point>& a_curve, const float& a_u, 
 	a_dP = Normal(3*(E.getX()-D.getX()), 3*(E.getY()-D.getY()),3*(E.getZ()-D.getZ()));
 }
 
-/*
+
 int main(int argc, char* argv[])
 {
 	Point p(1,3,4);
@@ -96,7 +96,9 @@ int main(int argc, char* argv[])
 	parser.readFile("test.bez");
 	vector<Point> points = parser.getPoints();
 	Patch patch(points);
-	cout<<patch.toString()<<endl;
+	//cout<<patch.toString()<<endl;
+	Normal n1(1,0,0);
+	Normal n2(0,1,0);
+
 }
 
-*/
