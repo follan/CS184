@@ -8,7 +8,7 @@ void setup()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clear the buffers
 
-	glMatrixMode(GL_PROJECTION)
+	glMatrixMode(GL_PROJECTION);
 }
 
 

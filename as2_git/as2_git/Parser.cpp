@@ -59,12 +59,3 @@ void Parser::createPoints(const vector<float>& a_coordinates)
 
 
 }
-
-
-
-//used for testing
-int main(int argc, char* argv[])
-{
-	Parser parser = Parser();
-	parser.readFile("test.bez");
-}
