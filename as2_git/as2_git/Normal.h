@@ -1,6 +1,9 @@
 #pragma once
 #include <cmath>
 #include <cassert>
+#include <sstream>
+#include <iostream>
+using namespace std;
 class Normal
 {
 public:
@@ -12,6 +15,7 @@ public:
 	float getX() const;
 	float getY() const;
 	float getZ() const;
+	string toString() const;
 private:
 	float m_x;
 	float m_y;
