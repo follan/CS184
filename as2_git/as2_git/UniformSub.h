@@ -1,6 +1,8 @@
 #pragma once
 #include "Patch.h"
 #include "Normal.h"
+#include <iostream>
+#include "Parser.h"
 #define epsilon 0.001
 
 class UniformSub

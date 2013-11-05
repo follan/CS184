@@ -17,6 +17,7 @@ float Point::getX() const
 	return m_x;
 }
 
+
 float Point::getY() const
 {
 	return m_y;
@@ -26,6 +27,14 @@ float Point::getZ() const
 {
 	return m_z;
 }
+
+string Point::toString() const
+{
+	stringstream ss;
+	ss<<"["<<m_x<<","<<m_y<<","<<m_z<<"]";
+	return ss.str();
+}
+
 
 Point Point::operator+(const Point a_p)const
 {

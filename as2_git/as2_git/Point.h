@@ -1,4 +1,6 @@
 #pragma once
+#include <sstream>
+using namespace std;
 class Point
 {
 public:
@@ -10,6 +12,7 @@ public:
 	Point operator*(const float a_c) const;
 	Point operator-(const Point a_p) const;
 
+	string toString() const;
 	float getX() const;
 	float getY() const;
 	float getZ() const;
@@ -18,3 +21,6 @@ private:
 	float m_x, m_y, m_z;
 };
 
+
+
+	

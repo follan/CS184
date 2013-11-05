@@ -35,6 +35,23 @@ vector<Point> Patch::getCol(int a_index) const
 	return retVec;
 }
 
+string Patch::toString() const
+{
+	stringstream ss;
+	ss<<"[";
+	for(int i=0; i<4; i++)
+	{
+		ss<<"[";
+		for(int j=0; j<4; j++)
+		{
+			ss<<m_points[i][j].toString()<<" ";
+		}
+		ss<<"]\n";
+	}
+
+	ss<<"]";
+	return ss.str();
+}
 
 
 Patch::~Patch(void)
