@@ -20,6 +20,6 @@ private:
 	/** Recognizes numbers in a string and adds them to a vector of flaots. */
 	void splitString(string line, vector<float>& a_coordinates);
 
-	/** Creates and adds control points to m_controlPoints. */
+	/** Creates and adds control points to m_points. */
 	void createPoints(const vector<float>& a_coordinates);
 };
