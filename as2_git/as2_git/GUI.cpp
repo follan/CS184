@@ -1,4 +1,7 @@
 #include "GUI.h"
+#include "Parser.h"
+#include <cassert>
+#include <iostream>
 
 GUI::~GUI(void)
 {
@@ -41,6 +44,34 @@ void reshapeScene(int widht, int height)
 /*
 int main(int argc ,char* argv[])
 {
+	//handle the given command line arguments
+	assert(argc >= 3);
+	string filename = argv[1];
+	float stepsize = atof(argv[2]);
+	string subdivision = "-u";
+
+	if (argc == 4)
+	{
+		subdivision = argv[3];
+	}
+
+	//parse the input file
+	Parser parser = Parser();
+	parser.readFile(filename);
+
+	//perform subdivision
+	if (subdivision.compare("-a") == 0) //adaptive subdivision
+	{
+		parser.getPoints();
+		cout << "adaptive" << endl;
+	}
+
+	else //uniform subdivision
+	{
+		cout << "uniform" << endl;
+	}
+
+	//OpenGL stuff
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE |GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(400, 400);
