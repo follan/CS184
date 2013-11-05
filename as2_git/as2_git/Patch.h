@@ -1,0 +1,19 @@
+#pragma once
+#include "Point.h"
+#include <vector>
+#include <tuple>
+#include <cassert>
+using namespace std;
+
+class Patch
+{
+public:
+	Patch(void);
+	Patch(vector<Point> a_points);
+	vector<Point> getRow(const int a_index) const;
+	vector<Point> getCol(const int a_index) const;
+	~Patch(void);
+private:
+	vector<vector<Point>> m_points;
+};
+

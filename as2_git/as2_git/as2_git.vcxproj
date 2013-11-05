@@ -64,12 +64,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Normal.h" />
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="Patch.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="UniformSub.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Normal.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="Patch.cpp" />
     <ClCompile Include="Point.cpp" />
+    <ClCompile Include="UniformSub.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
