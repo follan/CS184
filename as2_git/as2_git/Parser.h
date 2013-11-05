@@ -12,6 +12,7 @@ public:
 
 	/** Reads from a file of type .bez and adds control points to a vector. */
 	void readFile(string a_filename);
+	vector<Point> getPoints() const;
 
 private:
 	vector<Point> m_points;

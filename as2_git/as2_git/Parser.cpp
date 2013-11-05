@@ -13,6 +13,11 @@ Parser::Parser(void)
 Parser::~Parser(void)
 {
 }
+vector<Point> Parser::getPoints() const
+{
+	return m_points;
+}
+
 
 void Parser::readFile(string a_filename)
 {
