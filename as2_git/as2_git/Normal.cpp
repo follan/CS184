@@ -13,7 +13,6 @@ Normal::Normal(float a_x, float a_y, float a_z)
 	m_x = a_x/length;
 	m_y = a_y/length;
 	m_z = a_z/length;
-	cout<<length<<endl;
 }
 
 Normal Normal::crossProduct(const Normal a_n1, const Normal a_n2)
