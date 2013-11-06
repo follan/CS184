@@ -30,7 +30,7 @@ vector<Point> Patch::getCol(int a_index) const
 	vector<Point> retVec(4);
 	for(int i=0; i<4; i++)
 	{
-		retVec[i] = m_points[a_index][i];
+		retVec[i] = m_points[i][a_index];
 	}
 	return retVec;
 }

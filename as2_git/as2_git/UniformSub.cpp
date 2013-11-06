@@ -10,16 +10,16 @@ UniformSub::~UniformSub(void)
 {
 }
 
-void UniformSub::subDividePatch(const Patch& a_patch,const float& a_step) const
+void UniformSub::subDividePatch(const Patch& a_patch,const float& a_step, vector<Point>& a_returnVec)
 {
-	vector<vector<Point>> newPoints(4);
+	
 	
 	//compute how many subdivisions.
 	float u, v;
 	Point p;
 	Normal n;
 	int numDiv = (int)((1+epsilon)/a_step);
-	vector<Point> returnVec(numDiv*numDiv*4);
+	vector<vector<Point>> newPoints(numDiv);
 	for(int iu = 0; iu<numDiv; iu++)
 	{
 		u = iu*a_step;
@@ -36,15 +36,17 @@ void UniformSub::subDividePatch(const Patch& a_patch,const float& a_step) const
 		}
 
 	}
+	cout<<toString(newPoints)<<endl;
 	//trying to make a vector where 4 and 4 points make a square, counter clockwise
-	for(int i=0; i<numDiv; i++)
+	a_returnVec.resize((numDiv-1)*(numDiv-1)*4);
+	for(int i=0; i<numDiv-1; i++)
 	{
-		for(int j=0; j<numDiv;j++)
+		for(int j=0; j<numDiv-1;j++)
 		{
-			returnVec[i*numDiv+j*4] = newPoints[i][j];
-			returnVec[i*numDiv+j*4+1] = newPoints[i][j+1];
-			returnVec[i*numDiv+j*4+2] = newPoints[i+1][j+1];
-			returnVec[i*numDiv+j*4+3] = newPoints[i+1][j];
+			a_returnVec[i*(numDiv-1)*4+j*4] = newPoints[i][j];
+			a_returnVec[i*(numDiv-1)*4+j*4+1] = newPoints[i+1][j];
+			a_returnVec[i*(numDiv-1)*4+j*4+2] = newPoints[i+1][j+1];
+			a_returnVec[i*(numDiv-1)*4+j*4+3] = newPoints[i][j+1];
 		}
 
 	}
@@ -53,7 +55,7 @@ void UniformSub::subDividePatch(const Patch& a_patch,const float& a_step) const
 }
 
 
-void UniformSub::bezPatchInterp(const Patch& a_patch, const float& a_u, const float& a_v, Point& a_p, Normal& a_n) const
+void UniformSub::bezPatchInterp(const Patch& a_patch, const float& a_u, const float& a_v, Point& a_p, Normal& a_n)
 {
 	vector<Point> vcurve(4);
 	vector<Point> ucurve(4);
@@ -72,7 +74,7 @@ void UniformSub::bezPatchInterp(const Patch& a_patch, const float& a_u, const fl
 	
 }
 
-void UniformSub::bezCurveInterp(const vector<Point>& a_curve, const float& a_u, Point& a_p, Normal a_dP) const
+void UniformSub::bezCurveInterp(const vector<Point>& a_curve, const float& a_u, Point& a_p, Normal& a_dP)
 {
 	Point A = a_curve[0] * (1.0f-a_u)+a_curve[1]*a_u;
 	Point B = a_curve[1] * (1.0f-a_u)+a_curve[2]*a_u;
@@ -87,18 +89,35 @@ void UniformSub::bezCurveInterp(const vector<Point>& a_curve, const float& a_u, 
 	a_dP = Normal(3*(E.getX()-D.getX()), 3*(E.getY()-D.getY()),3*(E.getZ()-D.getZ()));
 }
 
+string UniformSub::toString(const vector<vector<Point>> a_points)
+{
+	stringstream ss;
+	ss<<"[";
+	for(unsigned int i=0; i<a_points.size(); i++)
+	{
+		ss<<"[";
+		for(unsigned int j=0; j<a_points[0].size(); j++)
+		{
+			ss<<a_points[i][j].toString()<<" ";
+		}
+		ss<<"]\n";
+	}
 
-//int main(int argc, char* argv[])
-//{
-//	Point p(1,3,4);
-//	cout<<p.toString()<<endl;
-//	Parser parser = Parser();
-//	parser.readFile("test.bez");
-//	vector<Point> points = parser.getPoints();
-//	Patch patch(points);
-//	//cout<<patch.toString()<<endl;
-//	Normal n1(1,0,0);
-//	Normal n2(0,1,0);
-//
-//}
+	ss<<"]";
+	return ss.str();
+}
+
+
+int main(int argc, char* argv[])
+{
+	Point p(1,3,4);
+	cout<<p.toString()<<endl;
+	Parser parser = Parser();
+	parser.readFile("test.bez");
+	vector<Point> points = parser.getPoints();
+	Patch patch(points);
+	vector<Point> retPoints;
+	UniformSub::subDividePatch(patch,0.1f,retPoints);  
+	//cout<<patch.toString()<<endl;
+}
 
