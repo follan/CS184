@@ -1,11 +1,14 @@
-//#pragma once
-//#include <stdlib.h>
-//#include <GL/glut.h>
-//
-//class GUITest
-//{
-//public:
-//	GUITest(void);
-//	~GUITest(void);
-//};
-//
+#pragma once
+#include <stdlib.h>
+#include <GL/glut.h>
+#include <vector>
+
+using namespace std;
+
+class GUITest
+{
+public:
+	GUITest(void);
+	~GUITest(void);
+};
+

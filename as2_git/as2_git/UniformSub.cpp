@@ -38,15 +38,16 @@ void UniformSub::subDividePatch(const Patch& a_patch,const float& a_step, vector
 	}
 	cout<<toString(newPoints)<<endl;
 	//trying to make a vector where 4 and 4 points make a square, counter clockwise
-	a_returnVec.resize((numDiv-1)*(numDiv-1)*4);
+	int oldSize = a_returnVec.size();
+	a_returnVec.resize(oldSize+(numDiv-1)*(numDiv-1)*4);
 	for(int i=0; i<numDiv-1; i++)
 	{
 		for(int j=0; j<numDiv-1;j++)
 		{
-			a_returnVec[i*(numDiv-1)*4+j*4] = newPoints[i][j];
-			a_returnVec[i*(numDiv-1)*4+j*4+1] = newPoints[i+1][j];
-			a_returnVec[i*(numDiv-1)*4+j*4+2] = newPoints[i+1][j+1];
-			a_returnVec[i*(numDiv-1)*4+j*4+3] = newPoints[i][j+1];
+			a_returnVec[oldSize+i*(numDiv-1)*4+j*4] = newPoints[i][j];
+			a_returnVec[oldSize+i*(numDiv-1)*4+j*4+1] = newPoints[i+1][j];
+			a_returnVec[oldSize+i*(numDiv-1)*4+j*4+2] = newPoints[i+1][j+1];
+			a_returnVec[oldSize+i*(numDiv-1)*4+j*4+3] = newPoints[i][j+1];
 		}
 
 	}
@@ -107,17 +108,18 @@ string UniformSub::toString(const vector<vector<Point>> a_points)
 	return ss.str();
 }
 
-//
-//int main(int argc, char* argv[])
-//{
-//	Point p(1,3,4);
-//	cout<<p.toString()<<endl;
-//	Parser parser = Parser();
-//	parser.readFile("test.bez");
-//	vector<Point> points = parser.getPoints();
-//	Patch patch(points);
-//	vector<Point> retPoints;
-//	UniformSub::subDividePatch(patch,0.1f,retPoints);  
-//	//cout<<patch.toString()<<endl;
-//}
+/*
+int main(int argc, char* argv[])
+{
+	Point p(1,3,4);
+	cout<<p.toString()<<endl;
+	Parser parser = Parser();
+	parser.readFile("test.bez");
+	vector<Point> points = parser.getPoints();
+	Patch patch(points);
+	vector<Point> retPoints;
+	UniformSub::subDividePatch(patch,0.1f,retPoints);  
+	//cout<<patch.toString()<<endl;
+}
 
+*/
