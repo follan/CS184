@@ -44,9 +44,9 @@ void UniformSub::subDividePatch(const Patch& a_patch,const float& a_step, vector
 		for(int j=0; j<numDiv-1;j++)
 		{
 			a_returnVec[i*(numDiv-1)*4+j*4] = newPoints[i][j];
-			a_returnVec[i*(numDiv-1)*4+j*4+1] = newPoints[i][j+1];
+			a_returnVec[i*(numDiv-1)*4+j*4+1] = newPoints[i+1][j];
 			a_returnVec[i*(numDiv-1)*4+j*4+2] = newPoints[i+1][j+1];
-			a_returnVec[i*(numDiv-1)*4+j*4+3] = newPoints[i+1][j];
+			a_returnVec[i*(numDiv-1)*4+j*4+3] = newPoints[i][j+1];
 		}
 
 	}
@@ -70,11 +70,11 @@ void UniformSub::bezPatchInterp(const Patch& a_patch, const float& a_u, const fl
 	bezCurveInterp(vcurve,a_v, a_p, dPdv);
 	bezCurveInterp(ucurve,a_u, a_p, dPdu);
 
-	//a_n = Normal::crossProduct(dPdu, dPdv);
+	a_n = Normal::crossProduct(dPdu, dPdv);
 	
 }
 
-void UniformSub::bezCurveInterp(const vector<Point>& a_curve, const float& a_u, Point& a_p, Normal a_dP)
+void UniformSub::bezCurveInterp(const vector<Point>& a_curve, const float& a_u, Point& a_p, Normal& a_dP)
 {
 	Point A = a_curve[0] * (1.0f-a_u)+a_curve[1]*a_u;
 	Point B = a_curve[1] * (1.0f-a_u)+a_curve[2]*a_u;
@@ -86,17 +86,17 @@ void UniformSub::bezCurveInterp(const vector<Point>& a_curve, const float& a_u, 
 	a_p = D*(1.0f-a_u)+E*a_u;
 
 	//a_dP = 3*(E - D);	written out. dont know a better way right now
-	//a_dP = Normal(3*(E.getX()-D.getX()), 3*(E.getY()-D.getY()),3*(E.getZ()-D.getZ()));
+	a_dP = Normal(3*(E.getX()-D.getX()), 3*(E.getY()-D.getY()),3*(E.getZ()-D.getZ()));
 }
 
 string UniformSub::toString(const vector<vector<Point>> a_points)
 {
 	stringstream ss;
 	ss<<"[";
-	for(int i=0; i<a_points.size(); i++)
+	for(unsigned int i=0; i<a_points.size(); i++)
 	{
 		ss<<"[";
-		for(int j=0; j<a_points[0].size(); j++)
+		for(unsigned int j=0; j<a_points[0].size(); j++)
 		{
 			ss<<a_points[i][j].toString()<<" ";
 		}
@@ -107,7 +107,7 @@ string UniformSub::toString(const vector<vector<Point>> a_points)
 	return ss.str();
 }
 
-/*
+
 int main(int argc, char* argv[])
 {
 	Point p(1,3,4);
@@ -121,4 +121,3 @@ int main(int argc, char* argv[])
 	//cout<<patch.toString()<<endl;
 }
 
-*/
