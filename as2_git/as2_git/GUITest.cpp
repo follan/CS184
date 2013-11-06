@@ -17,26 +17,28 @@ int numDiv;
 
 void setup()
 {
-	glLoadIdentity();
-	gluLookAt(0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-	//defines the position of the camera, where we are looking, and the up vector
 
-	glEnable(GL_DEPTH_TEST);
 }
 
 
 void renderScene()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clear the buffers
+	glEnable(GL_DEPTH_TEST);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+	//defines the position of the camera, where we are looking, and the up vector
+
+
 	//glScalef(1.0f, 1.0f, 2.0f);
 	glColor3f(1.0f,0.0f,0.0f);
+
 	for(unsigned int i =0; i<points.size(); i=i+4)
 	{
-		if(i==324) 
-		{glColor3f(0.0f,1.0f,0.0f);}
+		//if(i==324) 
+		//{glColor3f(0.0f,1.0f,0.0f);}
 		glBegin(GL_POLYGON);
 		for(int j=0; j<4;j++)
 		{
@@ -60,15 +62,17 @@ void renderScene()
 	glutSwapBuffers();
 }
 
-void reshapeScene(int widht, int height)
+void reshapeScene(int width, int height)
 {
-	glViewport(0, 0, widht, height);
+	assert(height > 0);
+	float aspectRatio = (float) width / (float) height;
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	//glFrustum(-1.0, 1.0, -1.0, 1.0, 0.0, 20.0); //defines the frustum by left, right, bottom, top, near and far
+	gluPerspective(90, aspectRatio, 3.0, 7.0);
+	//defines the perspective by setting field of view, aspect ratio, near and far clipping plane 
 
-	glOrtho(-1.0, 1.0, -1.0, 1.0, -3.0, 20.0);
+	glViewport(0, 0, width, height);
 }
 
 

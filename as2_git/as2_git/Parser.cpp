@@ -33,22 +33,26 @@ void Parser::readFile(string a_filename)
 	getline(input, line); //hack to ignore first line
 	m_numPatches = atoi(line.c_str());
 	//loop through the input file and retrieve the coordinates of the control points
+	int counter=0;
 	while (getline(input, line))
 	{
+		counter++;
 		splitString(line, coordinates);
 	}
+	cout<<coordinates.capacity()<<endl;
 	createPoints(coordinates);
 	input.close();
 }
 
 void Parser::splitString(string line, vector<float>& a_coordinates)
 {
+	
 	stringstream stringStream(line);
 	string point;
 	char delimeter = ' ';
 	while(getline(stringStream, point, delimeter))
 	{
-		if (isdigit(point[0]))
+		if (isdigit(point[0])|| point[0]=='-')
 		{
 			a_coordinates.push_back(atof(point.c_str()));
 		}
