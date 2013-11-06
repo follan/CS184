@@ -107,17 +107,17 @@ string UniformSub::toString(const vector<vector<Point>> a_points)
 	return ss.str();
 }
 
-
-int main(int argc, char* argv[])
-{
-	Point p(1,3,4);
-	cout<<p.toString()<<endl;
-	Parser parser = Parser();
-	parser.readFile("test.bez");
-	vector<Point> points = parser.getPoints();
-	Patch patch(points);
-	vector<Point> retPoints;
-	UniformSub::subDividePatch(patch,0.1f,retPoints);  
-	//cout<<patch.toString()<<endl;
-}
+//
+//int main(int argc, char* argv[])
+//{
+//	Point p(1,3,4);
+//	cout<<p.toString()<<endl;
+//	Parser parser = Parser();
+//	parser.readFile("test.bez");
+//	vector<Point> points = parser.getPoints();
+//	Patch patch(points);
+//	vector<Point> retPoints;
+//	UniformSub::subDividePatch(patch,0.1f,retPoints);  
+//	//cout<<patch.toString()<<endl;
+//}
 

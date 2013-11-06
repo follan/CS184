@@ -9,44 +9,50 @@ GUI::~GUI(void)
 
 void setup()
 {
-	glLoadIdentity();
-	gluLookAt(0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-	//defines the position of the camera, where we are looking, and the up vector
 
-	glEnable(GL_DEPTH_TEST);
 }
 
 
 void renderScene()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clear the buffers
+	glEnable(GL_DEPTH_TEST);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glScalef(1.0f, 1.0f, 2.0f);
+	gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+	//defines the position of the camera, where we are looking, and the up vector
+
+	glPushMatrix();
+	glTranslatef(0.0f, 0.0f, 0.0f); //don't do anything at the moment
+	glRotatef(45, 0.0f, 0.0f, 1.0f);
 
 	//we just draw something to make sure the basics work
 	glBegin(GL_POLYGON);
 	glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(-0.25f, 0.25f, -1.0f);
-	glVertex3f(-0.25f, -0.25f, -1.0f);
-	glVertex3f(0.25f, -0.25f, -1.0f);
-	glVertex3f(0.25f, 0.25f, -1.0f);
+	glVertex3f(-1.0f, 1.0f, 0.0f);
+	glVertex3f(-1.0f, -1.0f, 0.0f);
+	glVertex3f(1.0f, -1.0f, 0.0f);
+	glVertex3f(1.0f, 1.0f, 0.0f);
 	glEnd();
+
+	glPopMatrix();
 
 	glFlush(); //flush the buffer so things are actually drawn
 	glutSwapBuffers();
 }
 
-void reshapeScene(int widht, int height)
+void reshapeScene(int width, int height)
 {
-	glViewport(0, 0, widht, height);
+	assert(height > 0);
+	float aspectRatio = (float) width / (float) height;
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	//glFrustum(-1.0, 1.0, -1.0, 1.0, 0.0, 20.0); //defines the frustum by left, right, bottom, top, near and far
+	gluPerspective(90, aspectRatio, 3.0, 7.0);
+	//defines the perspective by setting field of view, aspect ratio, near and far clipping plane 
 
-	glOrtho(-1.0, 1.0, -1.0, 1.0, 0.0, 20.0);
+	glViewport(0, 0, width, height);
 }
 
 
