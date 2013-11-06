@@ -19,12 +19,12 @@ void UniformSub::subDividePatch(const Patch& a_patch,const float& a_step, vector
 	Point p;
 	Normal n;
 	int numDiv = (int)((1+epsilon)/a_step);
-	vector<vector<Point>> newPoints(numDiv);
-	for(int iu = 0; iu<numDiv; iu++)
+	vector<vector<Point>> newPoints(numDiv+1);
+	for(int iu = 0; iu<=numDiv; iu++)
 	{
 		u = iu*a_step;
 
-		for(int iv=0; iv<numDiv; iv++)
+		for(int iv=0; iv<=numDiv; iv++)
 		{
 			v = iv * a_step;
 
@@ -39,10 +39,10 @@ void UniformSub::subDividePatch(const Patch& a_patch,const float& a_step, vector
 	//cout<<toString(newPoints)<<endl;
 	//trying to make a vector where 4 and 4 points make a square, counter clockwise
 	int oldSize = a_returnVec.size();
-	a_returnVec.resize(oldSize+(numDiv-1)*(numDiv-1)*4);
-	for(int i=0; i<numDiv-1; i++)
+	a_returnVec.resize(oldSize+(numDiv)*(numDiv)*4);
+	for(int i=0; i<numDiv; i++)
 	{
-		for(int j=0; j<numDiv-1;j++)
+		for(int j=0; j<numDiv;j++)
 		{
 			a_returnVec[oldSize+i*(numDiv-1)*4+j*4] = newPoints[i][j];
 			a_returnVec[oldSize+i*(numDiv-1)*4+j*4+1] = newPoints[i+1][j];
