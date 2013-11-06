@@ -9,9 +9,11 @@ GUI::~GUI(void)
 
 void setup()
 {
-	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glFrustum(-1.0, 1.0, -1.0, 1.0, 0.0, -1.0); //defines the frustum by left, right, bottom, top, near and far
+	gluLookAt(0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+	//defines the position of the camera, where we are looking, and the up vector
+
+	glEnable(GL_DEPTH_TEST);
 }
 
 
@@ -21,14 +23,15 @@ void renderScene()
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	glScalef(1.0f, 1.0f, 2.0f);
 
 	//we just draw something to make sure the basics work
 	glBegin(GL_POLYGON);
 	glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(-0.5f, 0.5f, -0.5f);
-	glVertex3f(-0.5f, -0.5f, -0.5f);
-	glVertex3f(0.5f, -0.5f, -0.5f);
-	glVertex3f(0.5f, 0.5f, -0.5f);
+	glVertex3f(-0.25f, 0.25f, -1.0f);
+	glVertex3f(-0.25f, -0.25f, -1.0f);
+	glVertex3f(0.25f, -0.25f, -1.0f);
+	glVertex3f(0.25f, 0.25f, -1.0f);
 	glEnd();
 
 	glFlush(); //flush the buffer so things are actually drawn
@@ -37,11 +40,17 @@ void renderScene()
 
 void reshapeScene(int widht, int height)
 {
-	//do something when the window is resized
+	glViewport(0, 0, widht, height);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	//glFrustum(-1.0, 1.0, -1.0, 1.0, 0.0, 20.0); //defines the frustum by left, right, bottom, top, near and far
+
+	glOrtho(-1.0, 1.0, -1.0, 1.0, 0.0, 20.0);
 }
 
 
-/*
+
 int main(int argc ,char* argv[])
 {
 	//handle the given command line arguments
@@ -82,4 +91,4 @@ int main(int argc ,char* argv[])
 	glutReshapeFunc(reshapeScene);
 	glutMainLoop();
 }
-*/
+

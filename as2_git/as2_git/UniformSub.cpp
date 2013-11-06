@@ -88,17 +88,17 @@ void UniformSub::bezCurveInterp(const vector<Point>& a_curve, const float& a_u, 
 }
 
 
-int main(int argc, char* argv[])
-{
-	Point p(1,3,4);
-	cout<<p.toString()<<endl;
-	Parser parser = Parser();
-	parser.readFile("test.bez");
-	vector<Point> points = parser.getPoints();
-	Patch patch(points);
-	//cout<<patch.toString()<<endl;
-	Normal n1(1,0,0);
-	Normal n2(0,1,0);
-
-}
+//int main(int argc, char* argv[])
+//{
+//	Point p(1,3,4);
+//	cout<<p.toString()<<endl;
+//	Parser parser = Parser();
+//	parser.readFile("test.bez");
+//	vector<Point> points = parser.getPoints();
+//	Patch patch(points);
+//	//cout<<patch.toString()<<endl;
+//	Normal n1(1,0,0);
+//	Normal n2(0,1,0);
+//
+//}
 
