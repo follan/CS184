@@ -18,6 +18,11 @@ vector<Point> Parser::getPoints() const
 	return m_points;
 }
 
+int Parser::getNumPatches() const
+{
+	return m_numPatches;
+}
+
 
 void Parser::readFile(string a_filename)
 {
@@ -26,6 +31,7 @@ void Parser::readFile(string a_filename)
 	vector<float> coordinates;
 	input.open(a_filename);
 	getline(input, line); //hack to ignore first line
+	m_numPatches = atoi(line.c_str);
 	//loop through the input file and retrieve the coordinates of the control points
 	while (getline(input, line))
 	{

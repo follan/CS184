@@ -2,7 +2,7 @@
 #include "Parser.h"
 #include <cassert>
 #include <iostream>
-
+#include "UniformSub.h"
 
 GUITest::GUITest(void)
 {
@@ -12,6 +12,8 @@ GUITest::GUITest(void)
 GUITest::~GUITest(void)
 {
 }
+vector<Point> points;
+int numDiv;
 
 void setup()
 {
@@ -30,16 +32,28 @@ void renderScene()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glScalef(1.0f, 1.0f, 2.0f);
+	glColor3f(1.0f,0.0f,0.0f);
+	for(unsigned int i =0; i<points.size(); i=i+4)
+	{
+		glBegin(GL_POLYGON);
+		for(int j=0; j<4;j++)
+		{
+			glVertex3f(points[i+j].getX(),points[i+j].getY(),points[i+j].getZ());
+		}
+		glEnd();
+	}
+
+
 
 	//we just draw something to make sure the basics work
-	glBegin(GL_POLYGON);
+	/*glBegin(GL_POLYGON);
 	glColor3f(1.0f, 0.0f, 0.0f);
 	glVertex3f(-0.25f, 0.25f, -1.0f);
 	glVertex3f(-0.25f, -0.25f, -1.0f);
 	glVertex3f(0.25f, -0.25f, -1.0f);
 	glVertex3f(0.25f, 0.25f, -1.0f);
 	glEnd();
-
+	*/
 	glFlush(); //flush the buffer so things are actually drawn
 	glutSwapBuffers();
 }
@@ -83,8 +97,15 @@ int main(int argc ,char* argv[])
 
 	else //uniform subdivision
 	{
+		for(int i=0; i<parser.getNumPatches();i++)
+		{
+			UniformSub::subDividePatch(Patch(parser.getPoints()),stepsize, points);
+		}
+
+		
 		cout << "uniform" << endl;
 	}
+
 
 	//OpenGL stuff
 	glutInit(&argc, argv);
