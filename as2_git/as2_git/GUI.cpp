@@ -2,7 +2,7 @@
 #include "Parser.h"
 #include <cassert>
 #include <iostream>
-
+/*
 GUI::~GUI(void)
 {
 }
@@ -48,9 +48,9 @@ void reshapeScene(int widht, int height)
 
 	glOrtho(-1.0, 1.0, -1.0, 1.0, 0.0, 20.0);
 }
+*/
 
-
-
+/*
 int main(int argc ,char* argv[])
 {
 	//handle the given command line arguments
@@ -92,3 +92,4 @@ int main(int argc ,char* argv[])
 	glutMainLoop();
 }
 
+*/

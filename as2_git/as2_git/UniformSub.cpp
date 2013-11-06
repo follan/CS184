@@ -36,7 +36,7 @@ void UniformSub::subDividePatch(const Patch& a_patch,const float& a_step, vector
 		}
 
 	}
-	cout<<toString(newPoints)<<endl;
+	//cout<<toString(newPoints)<<endl;
 	//trying to make a vector where 4 and 4 points make a square, counter clockwise
 	int oldSize = a_returnVec.size();
 	a_returnVec.resize(oldSize+(numDiv-1)*(numDiv-1)*4);

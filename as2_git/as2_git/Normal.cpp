@@ -9,7 +9,7 @@ Normal::Normal(float a_x, float a_y, float a_z)
 {
 	float length = sqrtf(a_x*a_x +a_y*a_y+a_z*a_z);
 	//float length = 1;
-	assert(length != 0);
+//	assert(length != 0);
 	m_x = a_x/length;
 	m_y = a_y/length;
 	m_z = a_z/length;

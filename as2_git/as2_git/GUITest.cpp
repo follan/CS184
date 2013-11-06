@@ -31,10 +31,12 @@ void renderScene()
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glScalef(1.0f, 1.0f, 2.0f);
+	//glScalef(1.0f, 1.0f, 2.0f);
 	glColor3f(1.0f,0.0f,0.0f);
 	for(unsigned int i =0; i<points.size(); i=i+4)
 	{
+		if(i==324) 
+		{glColor3f(0.0f,1.0f,0.0f);}
 		glBegin(GL_POLYGON);
 		for(int j=0; j<4;j++)
 		{
@@ -66,7 +68,7 @@ void reshapeScene(int widht, int height)
 	glLoadIdentity();
 	//glFrustum(-1.0, 1.0, -1.0, 1.0, 0.0, 20.0); //defines the frustum by left, right, bottom, top, near and far
 
-	glOrtho(-1.0, 1.0, -1.0, 1.0, 0.0, 20.0);
+	glOrtho(-1.0, 1.0, -1.0, 1.0, -3.0, 20.0);
 }
 
 
@@ -97,10 +99,14 @@ int main(int argc ,char* argv[])
 
 	else //uniform subdivision
 	{
+		vector<Point> temp = parser.getPoints();
+		//cout<<temp.capacity()<<endl;
 		for(int i=0; i<parser.getNumPatches();i++)
 		{
-			UniformSub::subDividePatch(Patch(parser.getPoints()),stepsize, points);
+			UniformSub::subDividePatch(Patch(temp),stepsize, points);
+			temp.erase(temp.begin(), temp.size()>16 ? temp.begin() + 16: temp.end() );
 		}
+//		v.erase( v.begin(), v.size() > N ?  v.begin() + N : v.end() );
 
 		
 		cout << "uniform" << endl;
