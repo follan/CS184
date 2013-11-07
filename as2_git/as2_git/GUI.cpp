@@ -1,18 +1,20 @@
-#include "GUI.h"
+#include "GUITest.h"
 #include "Parser.h"
-#include "UniformSub.h"
 #include <cassert>
 #include <iostream>
+#include "UniformSub.h"
+#include "AdaptiveSub.h"
 
-GUI::GUI(void)
+GUITest::GUITest(void)
 {
-
 }
 
-GUI::~GUI(void)
+
+GUITest::~GUITest(void)
 {
 }
 vector<Point> points;
+bool isAdaptive = false;
 
 bool keyStatus[256] = {false}; //used to store what keys are pressed
 
@@ -35,6 +37,7 @@ float moveX = 0.0f;
 float moveY = 0.0f;
 float moveDelta = 0.2f; //the amount we move
 
+/** Used to register which special keys are pressed. */
 void performRotation()
 {
 	if (keyStatus[GLUT_KEY_LEFT])
@@ -132,8 +135,6 @@ void keyPressed(unsigned char key, int x, int y)
 
 	glutPostRedisplay();
 }
-
-
 void renderScene()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clear the buffers
@@ -141,7 +142,7 @@ void renderScene()
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(fieldOfView, aspectRatio, 1.0, 9.0);
+	gluPerspective(fieldOfView, aspectRatio, 1.0, 10.0);
 	//defines the perspective by setting field of view, aspect ratio, near and far clipping plane 
 
 	glMatrixMode(GL_MODELVIEW);
@@ -187,24 +188,21 @@ void renderScene()
 	
 
 	glPushMatrix();
-	glTranslatef(moveX, moveY, 0.0f); //translate the object
+	glTranslatef(moveX, moveY, 0.0f); //don't do anything at the moment
 	glRotatef(yAngle, 0, 1, 0); //the amount we rotate around the z-axis
 	glRotatef(xAngle, 1, 0, 0); //the amount we rotate around the x-axis
 
-	//we just draw something to make sure the basics work
-	//glBegin(GL_POLYGON);
-	//glColor3f(1.0f, 0.0f, 0.0f);
-	//glVertex3f(-1.0f, 1.0f, 0.0f);
-	//glVertex3f(-1.0f, -1.0f, 0.0f);
-	//glVertex3f(1.0f, -1.0f, 0.0f);
-	//glVertex3f(1.0f, 1.0f, 0.0f);
-	//glEnd();
 
-	//draw the input file
-	for(unsigned int i =0; i<points.size(); i=i+4)
+	//glScalef(1.0f, 1.0f, 2.0f);
+
+	int numVert = isAdaptive? 3:4;
+	//glColor3f(1.0f,0.0f,0.0f);
+	for(unsigned int i =0; i<points.size(); i=i+numVert)
 	{
+		//if(i==324) 
+		//{glColor3f(0.0f,1.0f,0.0f);}
 		glBegin(GL_POLYGON);
-		for(int j=0; j<4;j++)
+		for(int j=0; j<numVert;j++)
 		{
 			Point p = points[i+j];
 			float normalX = p.getNormal().getX();
@@ -215,8 +213,7 @@ void renderScene()
 		}
 		glEnd();
 	}
-
-	glPopMatrix();
+	
 
 	glFlush(); //flush the buffer so things are actually drawn
 	glutSwapBuffers();
@@ -236,38 +233,52 @@ void reshapeScene(int width, int height)
 }
 
 
+
 int main(int argc ,char* argv[])
 {
 	//handle the given command line arguments
 	assert(argc >= 3);
 	string filename = argv[1];
 	float stepsize = atof(argv[2]);
+	float threshold = atof(argv[2]);
 	string subdivision = "-u";
 
 	if (argc == 4)
 	{
 		subdivision = argv[3];
 	}
-
+	isAdaptive = (subdivision.compare("-a") == 0);
 	//parse the input file
 	Parser parser = Parser();
 	parser.readFile(filename);
 	vector<Point> temp = parser.getPoints();
-
 	//perform subdivision
-	if (subdivision.compare("-a") == 0) //adaptive subdivision
+	if (isAdaptive) //adaptive subdivision
 	{
+		for(int i=0; i<parser.getNumPatches();i++)
+		{
+			AdaptiveSub::subDividePatch(Patch(temp),points, threshold);
+			temp.erase(temp.begin(), temp.size()>16 ? temp.begin() + 16: temp.end() );
+		}
+
 		
+		cout << "adaptive" << endl;
 	}
 
 	else //uniform subdivision
 	{
+		//cout<<temp.capacity()<<endl;
 		for(int i=0; i<parser.getNumPatches();i++)
 		{
 			UniformSub::subDividePatch(Patch(temp),stepsize, points);
 			temp.erase(temp.begin(), temp.size()>16 ? temp.begin() + 16: temp.end() );
 		}
+//		v.erase( v.begin(), v.size() > N ?  v.begin() + N : v.end() );
+
+		
+		cout << "uniform" << endl;
 	}
+
 
 	//OpenGL stuff
 	glutInit(&argc, argv);
@@ -282,4 +293,3 @@ int main(int argc ,char* argv[])
 	glutSpecialUpFunc(keySpecialUp);
 	glutMainLoop();
 }
-
