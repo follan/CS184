@@ -13,8 +13,9 @@ public:
 	~UniformSub(void);
 	static void subDividePatch(const Patch& a_patch, const float& a_step, vector<Point>& a_drawPoints);
 	static string toString(const vector<vector<Point>> a_points);
-private:
 	static void bezPatchInterp(const Patch& a_patch, const float& a_u, const float& a_v, Point& a_p);
+	
+private:
 	static void bezCurveInterp(const vector<Point>& a_curve, const float& a_u, Point& a_p, Normal& a_dP);
 };
 

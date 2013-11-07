@@ -57,9 +57,9 @@ vector<Point> Patch::getCorners() const
 {
 	vector<Point> retVec(4);
 	retVec[0]=m_points[0][0];
-	retVec[1]=m_points[0][3];
 	retVec[1]=m_points[3][0];
-	retVec[1]=m_points[3][3];
+	retVec[2]=m_points[3][3];
+	retVec[3]=m_points[0][3];
 	return retVec;
 }
 
