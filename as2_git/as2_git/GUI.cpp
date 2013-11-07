@@ -1,5 +1,6 @@
 #include "GUI.h"
 #include "Parser.h"
+#include "UniformSub.h"
 #include <cassert>
 #include <iostream>
 
@@ -11,6 +12,7 @@ GUI::GUI(void)
 GUI::~GUI(void)
 {
 }
+vector<Point> points;
 
 bool keyStatus[256] = {false}; //used to store what keys are pressed
 
@@ -135,11 +137,11 @@ void keyPressed(unsigned char key, int x, int y)
 void renderScene()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clear the buffers
-	glEnable(GL_DEPTH_TEST | GL_LIGHTING | GL_COLOR_MATERIAL);
+	glEnable(GL_DEPTH_TEST);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(fieldOfView, aspectRatio, 3.0, 7.0);
+	gluPerspective(fieldOfView, aspectRatio, 1.0, 9.0);
 	//defines the perspective by setting field of view, aspect ratio, near and far clipping plane 
 
 	glMatrixMode(GL_MODELVIEW);
@@ -172,14 +174,17 @@ void renderScene()
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, light0Diffuse);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, light0Specular);
 	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHTING);
 
 	//set up material properties
 	GLfloat materialDiffuse[] = {1.0, 1.0, 1.0, 1.0};
 	GLfloat materialSpecular[] = {0.0, 0.0, 1.0, 1.0};
 	GLfloat materialShine = 5.0;
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, materialDiffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, materialSpecular);
-	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, materialShine);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, materialDiffuse);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, materialSpecular);
+	glMaterialf(GL_FRONT, GL_SHININESS, materialShine);
+	glEnable(GL_COLOR_MATERIAL);
+	
 
 	glPushMatrix();
 	glTranslatef(moveX, moveY, 0.0f); //translate the object
@@ -187,13 +192,29 @@ void renderScene()
 	glRotatef(xAngle, 1, 0, 0); //the amount we rotate around the x-axis
 
 	//we just draw something to make sure the basics work
-	glBegin(GL_POLYGON);
+	//glBegin(GL_POLYGON);
 	//glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(-1.0f, 1.0f, 0.0f);
-	glVertex3f(-1.0f, -1.0f, 0.0f);
-	glVertex3f(1.0f, -1.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, 0.0f);
-	glEnd();
+	//glVertex3f(-1.0f, 1.0f, 0.0f);
+	//glVertex3f(-1.0f, -1.0f, 0.0f);
+	//glVertex3f(1.0f, -1.0f, 0.0f);
+	//glVertex3f(1.0f, 1.0f, 0.0f);
+	//glEnd();
+
+	//draw the input file
+	for(unsigned int i =0; i<points.size(); i=i+4)
+	{
+		glBegin(GL_POLYGON);
+		for(int j=0; j<4;j++)
+		{
+			Point p = points[i+j];
+			float normalX = p.getNormal().getX();
+			float normalY = p.getNormal().getY();
+			float normalZ = p.getNormal().getZ();
+			glNormal3f(normalX, normalY, normalZ);
+			glVertex3f(p.getX(),p.getY(),p.getZ());
+		}
+		glEnd();
+	}
 
 	glPopMatrix();
 
@@ -231,17 +252,21 @@ int main(int argc ,char* argv[])
 	//parse the input file
 	Parser parser = Parser();
 	parser.readFile(filename);
+	vector<Point> temp = parser.getPoints();
 
 	//perform subdivision
 	if (subdivision.compare("-a") == 0) //adaptive subdivision
 	{
-		parser.getPoints();
-		cout << "adaptive" << endl;
+		
 	}
 
 	else //uniform subdivision
 	{
-		cout << "uniform" << endl;
+		for(int i=0; i<parser.getNumPatches();i++)
+		{
+			UniformSub::subDividePatch(Patch(temp),stepsize, points);
+			temp.erase(temp.begin(), temp.size()>16 ? temp.begin() + 16: temp.end() );
+		}
 	}
 
 	//OpenGL stuff
