@@ -12,7 +12,7 @@ GUI::~GUI(void)
 {
 }
 
-bool keyStatus[256] = {false};
+bool keyStatus[256] = {false}; //used to store what keys are pressed
 
 //the amount we rotate
 int yAngle = 0;
@@ -26,13 +26,13 @@ int fovDelta = 5; //the amount we zoom
 
 float aspectRatio = 1.0f;
 
-/** Used to register which special keys are pressed. */
-void keySpecialPressed(int key, int x, int y)
+//how much we move in the x and y direction
+float moveX = 0.0f;
+float moveY = 0.0f;
+float moveDelta = 0.2f; //the amount we move
+
+void performRotation()
 {
-	//TODO: add support for what should happen when shift key is pressed
-
-	keyStatus[key] = true;
-
 	if (keyStatus[GLUT_KEY_LEFT])
 	{
 		yAngle += angleDelta;
@@ -49,9 +49,48 @@ void keySpecialPressed(int key, int x, int y)
 	{
 		xAngle -= angleDelta;
 	}
+}
+
+void performTranslation()
+{
+	if (keyStatus[GLUT_KEY_LEFT])
+	{
+		moveX -= moveDelta;
+	}
+	else if (keyStatus[GLUT_KEY_RIGHT])
+	{
+		moveX += moveDelta;
+	}
+	else if (keyStatus[GLUT_KEY_DOWN])
+	{
+		moveY -= moveDelta;
+	}
+	else if (keyStatus[GLUT_KEY_UP])
+	{
+		moveY += moveDelta;
+	}
+}
+
+/** Used to register which special keys are pressed. */
+void keySpecialPressed(int key, int x, int y)
+{
+	//TODO: add support for what should happen when shift key is pressed
+
+	keyStatus[key] = true;
+
+	if (glutGetModifiers() == GLUT_ACTIVE_SHIFT) //the shift key is pressed
+	{
+		performTranslation();
+	}
+
+	else
+	{
+		performRotation();
+	}
 
 	glutPostRedisplay();
 }
+
 
 /** Unregisters keys that are released */
 void keySpecialUp(int key, int x, int y)
@@ -112,7 +151,7 @@ void renderScene()
 
 
 	glPushMatrix();
-	glTranslatef(0.0f, 0.0f, 0.0f); //don't do anything at the moment
+	glTranslatef(moveX, moveY, 0.0f); //translate the object
 	glRotatef(yAngle, 0, 1, 0); //the amount we rotate around the z-axis
 	glRotatef(xAngle, 1, 0, 0); //the amount we rotate around the x-axis
 
