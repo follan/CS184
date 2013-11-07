@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Parser.h"
 #include <sstream>
+#include "Triangle.h"
 class AdaptiveSub
 {
 public:

@@ -168,17 +168,16 @@ int main(int argc ,char* argv[])
 	//parse the input file
 	Parser parser = Parser();
 	parser.readFile(filename);
-
+	vector<Point> temp = parser.getPoints();
 	//perform subdivision
 	if (subdivision.compare("-a") == 0) //adaptive subdivision
 	{
-		parser.getPoints();
+		points = Patch(temp).getCorners();
 		cout << "adaptive" << endl;
 	}
 
 	else //uniform subdivision
 	{
-		vector<Point> temp = parser.getPoints();
 		//cout<<temp.capacity()<<endl;
 		for(int i=0; i<parser.getNumPatches();i++)
 		{
