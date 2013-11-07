@@ -44,10 +44,10 @@ void UniformSub::subDividePatch(const Patch& a_patch,const float& a_step, vector
 	{
 		for(int j=0; j<numDiv;j++)
 		{
-			a_returnVec[oldSize+i*(numDiv-1)*4+j*4] = newPoints[i][j];
-			a_returnVec[oldSize+i*(numDiv-1)*4+j*4+1] = newPoints[i+1][j];
-			a_returnVec[oldSize+i*(numDiv-1)*4+j*4+2] = newPoints[i+1][j+1];
-			a_returnVec[oldSize+i*(numDiv-1)*4+j*4+3] = newPoints[i][j+1];
+			a_returnVec[oldSize+i*(numDiv)*4+j*4] = newPoints[i][j];
+			a_returnVec[oldSize+i*(numDiv)*4+j*4+1] = newPoints[i+1][j];
+			a_returnVec[oldSize+i*(numDiv)*4+j*4+2] = newPoints[i+1][j+1];
+			a_returnVec[oldSize+i*(numDiv)*4+j*4+3] = newPoints[i][j+1];
 		}
 
 	}
