@@ -101,6 +101,16 @@ Point Point::operator*(const float a_c) const
 	return Point(m_x*a_c, m_y*a_c, m_z*a_c);
 }
 
+Point Point::operator/(const float a_c) const
+{
+	assert(a_c != 0);
+	return Point(m_x/a_c, m_y/a_c, m_z/a_c);
+}
+
+float Point::getLength() const
+{
+	return sqrt(m_x*m_x+m_y*m_y + m_z*m_z);
+}
 
 
 Point::~Point(void)

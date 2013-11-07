@@ -3,6 +3,7 @@
 #include <cassert>
 #include <iostream>
 #include "UniformSub.h"
+#include "AdaptiveSub.h"
 
 GUITest::GUITest(void)
 {
@@ -15,6 +16,7 @@ GUITest::~GUITest(void)
 vector<Point> points;
 
 bool keyStatus[256] = {false};
+bool isAdaptive = false;
 
 //the amount we rotate
 int yAngle = 0;
@@ -120,18 +122,21 @@ void renderScene()
 
 
 	//glScalef(1.0f, 1.0f, 2.0f);
+
+	int numVert = isAdaptive? 3:4;
 	glColor3f(1.0f,0.0f,0.0f);
-	for(unsigned int i =0; i<points.size(); i=i+4)
+	for(unsigned int i =0; i<points.size(); i=i+numVert)
 	{
 		//if(i==324) 
 		//{glColor3f(0.0f,1.0f,0.0f);}
 		glBegin(GL_POLYGON);
-		for(int j=0; j<4;j++)
+		for(int j=0; j<numVert;j++)
 		{
 			glVertex3f(points[i+j].getX(),points[i+j].getY(),points[i+j].getZ());
 		}
 		glEnd();
 	}
+	
 
 	glFlush(); //flush the buffer so things are actually drawn
 	glutSwapBuffers();
@@ -158,21 +163,28 @@ int main(int argc ,char* argv[])
 	assert(argc >= 3);
 	string filename = argv[1];
 	float stepsize = atof(argv[2]);
+	float threshold = atof(argv[2]);
 	string subdivision = "-u";
 
 	if (argc == 4)
 	{
 		subdivision = argv[3];
 	}
-
+	isAdaptive = (subdivision.compare("-a") == 0);
 	//parse the input file
 	Parser parser = Parser();
 	parser.readFile(filename);
 	vector<Point> temp = parser.getPoints();
 	//perform subdivision
-	if (subdivision.compare("-a") == 0) //adaptive subdivision
+	if (isAdaptive) //adaptive subdivision
 	{
-		points = Patch(temp).getCorners();
+		for(int i=0; i<parser.getNumPatches();i++)
+		{
+			AdaptiveSub::subDividePatch(Patch(temp),points, threshold);
+			temp.erase(temp.begin(), temp.size()>16 ? temp.begin() + 16: temp.end() );
+		}
+
+		
 		cout << "adaptive" << endl;
 	}
 

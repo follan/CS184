@@ -15,9 +15,11 @@ public:
 	Point operator+(const Point a_p) const;
 	Point operator*(const float a_c) const;
 	Point operator-(const Point a_p) const;
+	Point operator/(const float a_c) const;
 	Normal getNormal() const;
 	const Patch * getPatchPtr() const;
 	
+	float getLength() const;
 	string toString() const;
 	float getX() const;
 	float getY() const;
