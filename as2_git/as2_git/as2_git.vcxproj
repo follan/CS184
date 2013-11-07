@@ -70,6 +70,7 @@
     <ClInclude Include="GUI.h" />
     <ClInclude Include="GUITest.h" />
     <ClInclude Include="Normal.h" />
+    <ClInclude Include="ObjParser.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Patch.h" />
     <ClInclude Include="Point.h" />
@@ -81,6 +82,7 @@
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="GUITest.cpp" />
     <ClCompile Include="Normal.cpp" />
+    <ClCompile Include="ObjParser.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Patch.cpp" />
     <ClCompile Include="Point.cpp" />
