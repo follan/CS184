@@ -19,7 +19,9 @@ int yAngle = 0;
 int xAngle = 0;
 int angleDelta = 5; //the amount we increase or decrease the rotation
 
-int wireframeMode = -1; //-1 is false, 1 is true
+ //-1 is false, 1 is true
+int wireframeMode = -1;
+int smoothShadingMode = 1;
 
 int fieldOfView = 90;
 int fovDelta = 5; //the amount we zoom
@@ -104,6 +106,11 @@ void keyPressed(unsigned char key, int x, int y)
 	{
 		wireframeMode *= -1;
 	}
+	else if (key == 's')
+	{
+		smoothShadingMode *= -1;
+	}
+
 	else if (key == '+') //we zoom in by decreasing the field of view
 	{
 		if (fieldOfView > fovDelta)
@@ -128,7 +135,7 @@ void keyPressed(unsigned char key, int x, int y)
 void renderScene()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clear the buffers
-	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST | GL_LIGHTING | GL_COLOR_MATERIAL);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -149,6 +156,30 @@ void renderScene()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
+	if (smoothShadingMode == 1)
+	{
+		glShadeModel(GL_SMOOTH);
+	}
+	else {
+		glShadeModel(GL_FLAT);
+	}
+	
+	//set up lighting
+	GLfloat light0Position[] = {-1.0, 1.0, 0.0, 0.0}; //since the last element is 0 it's a directional light
+	GLfloat light0Diffuse[] = {0.0, 0.0, 1.0, 1.0}; //the last element defines whether or not this light is on
+	GLfloat light0Specular[] = {0.0, 0.0, 1.0, 1.0};
+	glLightfv(GL_LIGHT0, GL_POSITION, light0Position);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light0Diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light0Specular);
+	glEnable(GL_LIGHT0);
+
+	//set up material properties
+	GLfloat materialDiffuse[] = {1.0, 1.0, 1.0, 1.0};
+	GLfloat materialSpecular[] = {0.0, 0.0, 1.0, 1.0};
+	GLfloat materialShine = 5.0;
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, materialDiffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, materialSpecular);
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, materialShine);
 
 	glPushMatrix();
 	glTranslatef(moveX, moveY, 0.0f); //translate the object
@@ -157,7 +188,7 @@ void renderScene()
 
 	//we just draw something to make sure the basics work
 	glBegin(GL_POLYGON);
-	glColor3f(1.0f, 0.0f, 0.0f);
+	//glColor3f(1.0f, 0.0f, 0.0f);
 	glVertex3f(-1.0f, 1.0f, 0.0f);
 	glVertex3f(-1.0f, -1.0f, 0.0f);
 	glVertex3f(1.0f, -1.0f, 0.0f);
