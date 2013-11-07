@@ -66,6 +66,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AdaptiveSub.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="GUITest.h" />
     <ClInclude Include="Normal.h" />
@@ -75,6 +76,7 @@
     <ClInclude Include="UniformSub.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AdaptiveSub.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="GUITest.cpp" />
     <ClCompile Include="Normal.cpp" />
