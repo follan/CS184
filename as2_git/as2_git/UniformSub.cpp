@@ -29,7 +29,7 @@ void UniformSub::subDividePatch(const Patch& a_patch,const float& a_step, vector
 			v = iv * a_step;
 
 			//evaluate surface
-			bezPatchInterp(a_patch, u,v,p,n);
+			bezPatchInterp(a_patch, u,v,p);
 			//do something with the values p and n
 			//not using n for anything, omitting for now
 			newPoints[iu].push_back(p);
@@ -56,7 +56,7 @@ void UniformSub::subDividePatch(const Patch& a_patch,const float& a_step, vector
 }
 
 
-void UniformSub::bezPatchInterp(const Patch& a_patch, const float& a_u, const float& a_v, Point& a_p, Normal& a_n)
+void UniformSub::bezPatchInterp(const Patch& a_patch, const float& a_u, const float& a_v, Point& a_p)
 {
 	vector<Point> vcurve(4);
 	vector<Point> ucurve(4);
@@ -70,8 +70,7 @@ void UniformSub::bezPatchInterp(const Patch& a_patch, const float& a_u, const fl
 	Normal dPdu;
 	bezCurveInterp(vcurve,a_v, a_p, dPdv);
 	bezCurveInterp(ucurve,a_u, a_p, dPdu);
-
-	a_n = Normal::crossProduct(dPdu, dPdv);
+	a_p = Point(a_p, Normal::crossProduct(dPdu, dPdv),&a_patch,a_u,a_v);
 	
 }
 
