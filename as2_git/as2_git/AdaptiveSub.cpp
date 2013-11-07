@@ -106,7 +106,7 @@ void AdaptiveSub::midPointTestTriangle(const Triangle& a_triangle, const Patch& 
 	{
 		//curveMidPoint2 (between p1-p3)
 		a_triangleQueue.push(Triangle(a_triangle.getP1(),a_triangle.getP2(),curveMidPoint2));
-		a_triangleQueue.push(Triangle(curveMidPoint3, a_triangle.getP2(), a_triangle.getP3()));
+		a_triangleQueue.push(Triangle(curveMidPoint2, a_triangle.getP2(), a_triangle.getP3()));
 	}
 	else if(e1 && !e2 && !e3)
 	{
