@@ -35,7 +35,7 @@ void renderScene()
 	//glScalef(1.0f, 1.0f, 2.0f);
 	glColor3f(1.0f,0.0f,0.0f);
 	glPushMatrix();
-	glRotatef(-90,1,0,0);
+	glRotatef(0,1,0,0);
 
 	for(unsigned int i =0; i<points.size(); i=i+4)
 	{

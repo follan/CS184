@@ -5,7 +5,7 @@
 #include <cassert>
 #include <sstream>
 using namespace std;
-
+class Point;
 class Patch
 {
 public:

@@ -10,7 +10,35 @@ Point::Point(float a_x, float a_y, float a_z)
 	m_x = a_x;
 	m_y = a_y;
 	m_z = a_z;
+	m_normal = Normal();
+	m_patchPtr =0;
+	m_v=0;
+	m_u=0;
 }
+
+Point::Point(Point& a_point, Normal& a_normal,const Patch* a_patchPtr, const float& a_u, const float& a_v)
+{
+	m_x=a_point.getX();
+	m_y=a_point.getY();
+	m_z=a_point.getZ();
+	m_normal = a_normal;
+	m_patchPtr = a_patchPtr;
+	m_u=a_u;
+	m_v=a_v;
+}
+
+
+Point::Point(float a_x, float a_y, float a_z, Normal& a_normal, Patch* a_patchPtr, const float& a_u, const float& a_v)
+{
+	m_x = a_x;
+	m_y = a_y;
+	m_z = a_z;
+	m_normal = a_normal;
+	m_patchPtr = a_patchPtr;
+	m_u=a_u;
+	m_v=a_v;
+}
+
 
 float Point::getX() const
 {
@@ -27,6 +55,27 @@ float Point::getZ() const
 {
 	return m_z;
 }
+
+Normal Point::getNormal() const
+{
+	return m_normal;
+}
+
+float Point::getU() const
+{
+	return m_u;
+}
+
+float Point::getV() const
+{
+	return m_v;
+}
+
+const Patch* Point::getPatchPtr() const
+{
+	return m_patchPtr;
+}
+
 
 string Point::toString() const
 {
