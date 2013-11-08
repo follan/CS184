@@ -192,15 +192,10 @@ void renderScene()
 	glRotatef(yAngle, 0, 1, 0); //the amount we rotate around the z-axis
 	glRotatef(xAngle, 1, 0, 0); //the amount we rotate around the x-axis
 
-
-	//glScalef(1.0f, 1.0f, 2.0f);
-
 	int numVert = isAdaptive? 3:4;
-	//glColor3f(1.0f,0.0f,0.0f);
+
 	for(unsigned int i =0; i<points.size(); i=i+numVert)
 	{
-		//if(i==324) 
-		//{glColor3f(0.0f,1.0f,0.0f);}
 		glBegin(GL_POLYGON);
 		for(int j=0; j<numVert;j++)
 		{
