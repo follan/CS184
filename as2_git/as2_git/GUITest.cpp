@@ -1,5 +1,6 @@
 #include "GUITest.h"
 #include "Parser.h"
+#include "ObjParser.h"
 #include <cassert>
 #include <iostream>
 #include "UniformSub.h"
@@ -14,6 +15,7 @@ GUITest::~GUITest(void)
 {
 }
 vector<Point> points;
+vector<Polygon> polygons;
 bool isAdaptive = false;
 bool isObj = false;
 
@@ -176,7 +178,7 @@ void renderScene()
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, light0Diffuse);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, light0Specular);
 	glEnable(GL_LIGHT0);
-	glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHTING);
 
 	//set up material properties
 	GLfloat materialDiffuse[] = {1.0, 1.0, 1.0, 1.0};
@@ -195,26 +197,48 @@ void renderScene()
 
 
 	//glScalef(1.0f, 1.0f, 2.0f);
-
-	int numVert = isAdaptive || isObj? 3:4;
-	//glColor3f(1.0f,0.0f,0.0f);
-	for(unsigned int i =0; i<points.size(); i=i+numVert)
+	if(isObj)
 	{
-		//if(i==324) 
-		//{glColor3f(0.0f,1.0f,0.0f);}
-		glBegin(GL_POLYGON);
-		for(int j=0; j<numVert;j++)
+		glColor3f(1.0f,0.0f,0.0f);
+		for(int i=0; i<polygons.size();i++)
 		{
-			Point p = points[i+j];
-			float normalX = p.getNormal().getX();
-			float normalY = p.getNormal().getY();
-			float normalZ = p.getNormal().getZ();
-			glNormal3f(normalX, normalY, normalZ);
-			glVertex3f(p.getX(),p.getY(),p.getZ());
+			glBegin(GL_POLYGON);
+			for(int j=0; j<polygons[i].size(); j++)
+			{
+				Point p = polygons[i][j];
+				float normalX = p.getNormal().getX();
+				float normalY = p.getNormal().getY();
+				float normalZ = p.getNormal().getZ();
+				glNormal3f(normalX, normalY, normalZ);
+				glVertex3f(p.getX(),p.getY(),p.getZ());
+			}
+			glEnd();
 		}
-		glEnd();
+
+
 	}
-	
+	else
+	{
+
+		int numVert = isAdaptive? 3:4;
+		
+		for(unsigned int i =0; i<points.size(); i=i+numVert)
+		{
+			//if(i==324) 
+			//{glColor3f(0.0f,1.0f,0.0f);}
+			glBegin(GL_POLYGON);
+			for(int j=0; j<numVert;j++)
+			{
+				Point p = points[i+j];
+				float normalX = p.getNormal().getX();
+				float normalY = p.getNormal().getY();
+				float normalZ = p.getNormal().getZ();
+				glNormal3f(normalX, normalY, normalZ);
+				glVertex3f(p.getX(),p.getY(),p.getZ());
+			}
+			glEnd();
+		}
+	}
 
 	glFlush(); //flush the buffer so things are actually drawn
 	glutSwapBuffers();
@@ -243,7 +267,9 @@ int main(int argc ,char* argv[])
 	isObj = filename.substr(filename.length()-4,4).compare(".obj") ==0;
 	if(isObj)
 	{
-
+		ObjParser objparser = ObjParser();
+		objparser.readFile(filename);
+		polygons = objparser.getPolygons();
 	}
 	
 	else
