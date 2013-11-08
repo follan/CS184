@@ -29,6 +29,7 @@ int angleDelta = 5; //the amount we increase or decrease the rotation
  //-1 is false, 1 is true
 int wireframeMode = -1;
 int smoothShadingMode = 1;
+int curvatureShadinMode = -1;
 
 int fieldOfView = 90;
 int fovDelta = 5; //the amount we zoom
@@ -135,6 +136,11 @@ void keyPressed(unsigned char key, int x, int y)
 		}
 		//don't let field of view become 180
 	}
+	else if(key == 'c')//curvature shading
+	{
+		curvatureShadinMode *= -1;
+	}
+
 
 	glutPostRedisplay();
 }
@@ -169,7 +175,7 @@ void renderScene()
 	else {
 		glShadeModel(GL_FLAT);
 	}
-	
+
 	//set up lighting
 	GLfloat light0Position[] = {-1.0, 1.0, 0.0, 0.0}; //since the last element is 0 it's a directional light
 	GLfloat light0Diffuse[] = {0.0, 0.0, 1.0, 1.0}; //the last element defines whether or not this light is on
@@ -178,7 +184,7 @@ void renderScene()
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, light0Diffuse);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, light0Specular);
 	glEnable(GL_LIGHT0);
-	//glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHTING);
 
 	//set up material properties
 	GLfloat materialDiffuse[] = {1.0, 1.0, 1.0, 1.0};
@@ -215,30 +221,55 @@ void renderScene()
 			glEnd();
 		}
 
-
 	}
 	else
 	{
-
 		int numVert = isAdaptive? 3:4;
-		
-		for(unsigned int i =0; i<points.size(); i=i+numVert)
+		if(curvatureShadinMode == 1)
 		{
-			//if(i==324) 
-			//{glColor3f(0.0f,1.0f,0.0f);}
-			glBegin(GL_POLYGON);
-			for(int j=0; j<numVert;j++)
+			glDisable(GL_LIGHTING);
+			for(unsigned int i=0; i<points.size(); i=i+numVert)
 			{
-				Point p = points[i+j];
-				float normalX = p.getNormal().getX();
-				float normalY = p.getNormal().getY();
-				float normalZ = p.getNormal().getZ();
-				glNormal3f(normalX, normalY, normalZ);
-				glVertex3f(p.getX(),p.getY(),p.getZ());
+				glBegin(GL_POLYGON);
+				for(int j=0; j<numVert;j++)
+				{
+					Point p = points[i+j];
+					Normal dPdu = p.getDu();
+					Normal dPdv = p.getDv();
+					Point dpdu(dPdu.getX(), dPdu.getY(), dPdu.getZ());
+					Point dpdv(dPdv.getX(), dPdv.getY(), dPdv.getZ());
+					Point x(1.0f,0.0f,0.0f);
+					Point y(0.0f,1.0f,0.0f);
+					float red = x.getX()*dPdu.getX();
+					float blue =y.getY()*dPdv.getY();
+					//float red = dPdu.getX()*dPdv.getX() + dPdu.getY()*dPdv.getY() + dPdu.getZ()*dPdv.getZ();
+					glColor3f(fabsf(blue), 0.0f,fabsf(red));
+					glVertex3f(p.getX(), p.getY(),p.getZ());
+				}
+				glEnd();
 			}
-			glEnd();
+
+		}
+		else
+		{
+			for(unsigned int i =0; i<points.size(); i=i+numVert)
+			{
+				glColor3f(1.0f,1.0f,1.0f);
+				glBegin(GL_POLYGON);
+				for(int j=0; j<numVert;j++)
+				{
+					Point p = points[i+j];
+					float normalX = p.getNormal().getX();
+					float normalY = p.getNormal().getY();
+					float normalZ = p.getNormal().getZ();
+					glNormal3f(normalX, normalY, normalZ);
+					glVertex3f(p.getX(),p.getY(),p.getZ());
+				}
+				glEnd();
+			}
 		}
 	}
+	
 
 	glFlush(); //flush the buffer so things are actually drawn
 	glutSwapBuffers();

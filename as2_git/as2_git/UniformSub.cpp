@@ -70,7 +70,7 @@ void UniformSub::bezPatchInterp(const Patch& a_patch, const float& a_u, const fl
 	Normal dPdu;
 	bezCurveInterp(vcurve,a_v, a_p, dPdv);
 	bezCurveInterp(ucurve,a_u, a_p, dPdu);
-	a_p = Point(a_p, Normal::crossProduct(dPdu, dPdv),&a_patch,a_u,a_v);
+	a_p = Point(a_p, Normal::crossProduct(dPdu, dPdv),&a_patch,a_u,a_v,dPdu, dPdv);
 	
 }
 
