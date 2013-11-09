@@ -14,6 +14,7 @@ Point::Point(float a_x, float a_y, float a_z)
 	m_patchPtr =0;
 	m_v=0;
 	m_u=0;
+	m_hasNormal=false;
 }
 
 Point::Point(Point& a_point, Normal& a_normal,const Patch* a_patchPtr, const float& a_u, const float& a_v,const Normal& a_du, const Normal& a_dv)
@@ -27,6 +28,7 @@ Point::Point(Point& a_point, Normal& a_normal,const Patch* a_patchPtr, const flo
 	m_v=a_v;
 	m_du = a_du;
 	m_dv=a_dv;
+	m_hasNormal = true;
 }
 
 
@@ -39,6 +41,8 @@ Point::Point(float a_x, float a_y, float a_z, Normal& a_normal, Patch* a_patchPt
 	m_patchPtr = a_patchPtr;
 	m_u=a_u;
 	m_v=a_v;
+	m_hasNormal = true;
+
 }
 
 
@@ -62,6 +66,12 @@ Normal Point::getNormal() const
 {
 	return m_normal;
 }
+
+bool Point::hasNormal() const
+{
+	return m_hasNormal;
+}
+
 
 float Point::getU() const
 {

@@ -28,10 +28,12 @@ public:
 	float getZ() const;
 	float getU() const;
 	float getV() const;
+	bool hasNormal() const;
 
 private:
 	float m_x, m_y, m_z, m_u, m_v;
 	Normal m_normal, m_du, m_dv;
+	bool m_hasNormal;
 	const Patch* m_patchPtr;
 };
 

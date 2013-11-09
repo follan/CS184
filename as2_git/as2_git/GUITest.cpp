@@ -177,7 +177,7 @@ void renderScene()
 	}
 
 	//set up lighting
-	GLfloat light0Position[] = {-1.0, 1.0, 0.0, 0.0}; //since the last element is 0 it's a directional light
+	GLfloat light0Position[] = {-1.0, 1.0, 1.0, 0.0}; //since the last element is 0 it's a directional light
 	GLfloat light0Diffuse[] = {0.0, 0.0, 1.0, 1.0}; //the last element defines whether or not this light is on
 	GLfloat light0Specular[] = {0.0, 0.0, 1.0, 1.0};
 	glLightfv(GL_LIGHT0, GL_POSITION, light0Position);
@@ -205,7 +205,11 @@ void renderScene()
 	//glScalef(1.0f, 1.0f, 2.0f);
 	if(isObj)
 	{
-		glColor3f(1.0f,0.0f,0.0f);
+		if(!polygons[0][0].hasNormal())
+		{
+			glDisable(GL_LIGHTING);
+			glColor3f(1.0f,0.0f,0.0f);
+		}
 		for(int i=0; i<polygons.size();i++)
 		{
 			glBegin(GL_POLYGON);

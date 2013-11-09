@@ -93,8 +93,14 @@ void ObjParser::parseLine(string line)
 		for(int i=0; i<numV; i++)
 		{
 			//m_points.push_back(Point(m_vertices[vertexNumbers[i]-1],m_normals[normalNumbers[i]-1],0,0,0));
-			//polygon.push_back(Point(m_vertices[vertexNumbers[i]-1],m_normals[normalNumbers[i]-1],0,0,0));
-			polygon.push_back(m_vertices[vertexNumbers[i]-1]);
+			if(m_normals.size() !=0)
+			{
+				polygon.push_back(Point(m_vertices[vertexNumbers[i]-1],m_normals[normalNumbers[i]-1],0,0,0,Normal(),Normal()));
+			}
+			else
+			{
+				polygon.push_back(m_vertices[vertexNumbers[i]-1]);
+			}
 		}
 		m_polygons.push_back(polygon);
 	}
